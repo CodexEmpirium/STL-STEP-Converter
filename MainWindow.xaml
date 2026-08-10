@@ -1,0 +1,126 @@
+<Window x:Class="StlStepConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="STL STEP Converter" Height="620" Width="900" MinHeight="560" MinWidth="760"
+        Background="#F5F7FA">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="DropZone" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#7E8EA3"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="AllowDrop" Value="True"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="STL STEP Converter" FontSize="28" FontWeight="SemiBold" Foreground="#18212F"/>
+            <TextBlock Text="Convert STL meshes to STEP solids and STEP models back to STL meshes using the FreeCAD Python API."
+                       Margin="0,6,0,0" FontSize="14" Foreground="#4F5D70"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="0,0,0,18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="FreeCADCmd" VerticalAlignment="Center" Margin="0,0,12,0"
+                       FontWeight="SemiBold" Foreground="#263244"/>
+            <TextBox Grid.Column="1" x:Name="FreeCadPathBox" IsReadOnly="True" Margin="0,0,8,0"/>
+            <Button Grid.Column="2" Content="Browse" Click="BrowseFreeCad_Click"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="18"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" x:Name="StlDropZone" Style="{StaticResource DropZone}"
+                    DragEnter="DropZone_DragEnter" Drop="StlDropZone_Drop">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="STL file" FontSize="20" FontWeight="SemiBold" Foreground="#18212F"/>
+                        <TextBlock Text="Drop an .stl file here or open one from disk." Margin="0,4,0,0"
+                                   Foreground="#5D6B7E"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                        <TextBlock Text="Selected file" FontWeight="SemiBold" Foreground="#374357"/>
+                        <TextBox x:Name="StlFileBox" IsReadOnly="True" Margin="0,8,0,12"/>
+                        <TextBlock Text="Directory" FontWeight="SemiBold" Foreground="#374357"/>
+                        <TextBox x:Name="StlDirectoryBox" IsReadOnly="True" Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Open STL" Click="OpenStl_Click"/>
+                        <Button Content="Convert to STEP" Click="ConvertStlToStep_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="2" x:Name="StepDropZone" Style="{StaticResource DropZone}"
+                    DragEnter="DropZone_DragEnter" Drop="StepDropZone_Drop">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="STEP file" FontSize="20" FontWeight="SemiBold" Foreground="#18212F"/>
+                        <TextBlock Text="Drop a .step or .stp file here or open one from disk." Margin="0,4,0,0"
+                                   Foreground="#5D6B7E"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                        <TextBlock Text="Selected file" FontWeight="SemiBold" Foreground="#374357"/>
+                        <TextBox x:Name="StepFileBox" IsReadOnly="True" Margin="0,8,0,12"/>
+                        <TextBlock Text="Directory" FontWeight="SemiBold" Foreground="#374357"/>
+                        <TextBox x:Name="StepDirectoryBox" IsReadOnly="True" Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Open STEP" Click="OpenStep_Click"/>
+                        <Button Content="Convert to STL" Click="ConvertStepToStl_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="3" Background="#E9EEF5" CornerRadius="8" Padding="14" Margin="0,18,0,0">
+            <TextBlock x:Name="StatusText" Text="Ready" Foreground="#263244" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>
